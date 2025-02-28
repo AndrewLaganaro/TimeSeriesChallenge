@@ -1,0 +1,84 @@
+Technical Challenge:
+
+Demand Forecasting with Time Series
+
+Context
+A pharmaceutical distribution company wants to improve its product demand forecasts to optimize its inventories and reduce operating costs. Currently, forecasts are made manually and have not been effective, resulting in both excess inventory and product shortages. As a Senior Data Scientist, you have been asked to develop a demand forecasting model using time series.
+
+Objective
+Develop a demand forecasting model for the next 12 months, based on historical sales data for a specific product.
+
+You must use time series techniques to create this model, focusing on the appropriate choice of error metrics and critical analysis of the model's performance in relation to the validation data set. In addition, you must consider factors such as trends, seasonality and possible anomalies.
+
+Instructions
+EDA - Initial Data Exploration: Perform an extensive exploratory analysis of the data, identifying patterns
+
+Modeling: Use at least 2 modeling methods to predict future demand. We recommend considering:
+
+Traditional time series models (such as ARIMA, SARIMA, or ETS, etc.).
+
+Machine learning-based models (such as LSTM, Prophet, or others).
+
+Hierarchical time series models (top-down, bottom-up, etc.)
+
+Cross-Validation: Justify why you chose this method instead of another (taking into account the particularities of time series (such as Time Series Split). If you use cross-validation in fine tuning, justify it as well.
+
+Evaluation Metrics:
+
+Evaluate the performance of your model using the following error metrics:
+
+MAE (Mean Absolute Error)
+
+MSE (Mean Squared Error)
+
+RMSE (Root Mean Squared Error)
+
+MAPE (Mean Absolute Percentage Error)
+
+WMAPE (Weighted Mean Absolute Percentage Error)
+
+Explain which metric you consider most appropriate for this type of problem and why.
+
+Focus on error metrics but do not exclude the others
+
+Hyperparameter Tuning: Describe the hyperparameter tuning process, if applicable, and why you used this method instead of other.
+
+Residual Analysis: Evaluate the model's residuals + whether or not the statistical assumptions are met and their respective p-values.
+
+Delivery:
+A Jupyter notebook containing:
+
+Exploratory Data Analysis (EDA).
+
+Detailed explanation of the chosen models and validation steps.
+
+Discussion of metrics, especially errors, residuals, and interpretation of results.
+
+Conclusions on the effectiveness of the models.
+
+Well-structured and extensively commented code, ready to be executed.
+
+If you wish, feel free to propose new insights or methods beyond what is requested.
+
+Evaluation Criteria:
+Quality of Exploratory Analysis: Adequate identification of patterns in time series (trend, seasonality, etc.).
+
+Adequacy of Model: Ability to choose appropriate models for the task.
+
+Explanation of Metrics (mainly Error): Clarity and precision when explaining the metrics used, and justification for the metric chosen as the main one.
+
+Interpretation of Results: Ability to interpret the results and offer useful insights for the business.
+
+Code Quality: Organization, clarity, appropriate use of comments and efficiency.
+
+Technical Depth: Demonstration of advanced knowledge in time series, models, metrics, and residual analysis.
+
+Bonus Differentiators:
+
+If one of the chosen models is a hierarchical time series.
+
+Demonstrate depth in the use of WMAPE
+
+Consideration of exogenous variables collected from public datasets.
+
+Use of mlflow

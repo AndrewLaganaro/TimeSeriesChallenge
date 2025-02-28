@@ -1,0 +1,122 @@
+Given your 72-hour deadline (and the practical need to finish in less, say 48-60 hours to allow for polish and review), we need to craft a Jupyter notebook that meets the core demands of the challenge efficiently while leveraging your strengths from the 2022 project. The goal is to demonstrate solid skills, cover the essentials, and leave a strong impression—without overloading you with infinite EDA rabbit holes or overly complex modeling. I’ll draw a clear line between what’s absolutely necessary (must-haves to meet the challenge’s criteria) and what’s a plus (nice-to-haves that could impress but aren’t critical given the time). Since I have your full 2022 notebook, I’ll tailor this to your style, reusing familiar sections where possible and adding only what’s essential for the new time series focus.
+Here’s the proposed structure, with sections and subsections, justification based on the challenge’s demands, and an eye on your existing skills from Notebook_previous.txt. I’ll assume a single-product pharmaceutical sales dataset (monthly data over a few years) as the input, since no specific data was provided.
+Proposed Jupyter Notebook Structure
+1. Introduction
+Subsections: None
+Necessity: Must-have
+Why: Sets the stage, aligns with your 2022 “Business Problem” section. Briefly state the challenge: forecast demand for 12 months, optimize inventory, improve on manual methods. Mention CRISP-DS (your comfort zone) as the framework.
+Time: ~30 minutes (adapt your 2022 intro).
+Content: Context, objective (12-month forecast), quick nod to SARIMA and Prophet as chosen models.
+2. Data Loading and Initial Setup
+Subsections: 
+Libraries
+Data Import
+Necessity: Must-have
+Why: Basic setup, mirrors your 2022 “Starting Phase.” You need data in hand to proceed.
+Time: ~1 hour (reuse your 2022 code, tweak for new data).
+Content: Import pandas, numpy, matplotlib, seaborn, statsmodels (for SARIMA), prophet. Load a dummy dataset (e.g., monthly sales from 2020-2024). Use your 2022 style: try/except for loading, basic checks (df.head(), df.info()).
+3. Exploratory Data Analysis (EDA)
+Subsections:
+Data Overview
+Time Series Visualization
+Decomposition (Trend, Seasonality, Residual)
+Stationarity Check
+Necessity: Must-have (core subsections only)
+Why: The challenge demands pattern identification (trend, seasonality, anomalies). Your 2022 EDA was extensive but lacked time series specifics—here’s the streamlined version.
+Time: ~6-8 hours (biggest chunk, but focused).
+Content:
+Data Overview: Rows, columns, missing values, data types (like your 2022 “Data Dimensions,” “Missing Values”).
+Time Series Visualization: Plot sales over time (plt.plot(df['date'], df['sales'])), highlight trends/seasonality visually (your 2022 “Descriptive Data Analysis” style).
+Decomposition: Use statsmodels.tsa.seasonal_decompose to split trend, seasonality (yearly, s=12), residual. Plot each (essential for SARIMA parameter hints).
+Stationarity Check: Visual check (rolling mean/std) + ADF test (statsmodels.tsa.stattools.adfuller) for stationarity (SARIMA needs this).
+Plus: ACF/PACF plots, anomaly detection (e.g., z-scores). Skip these—too time-intensive, not required explicitly.
+4. Data Preparation
+Subsections:
+Cleaning
+Feature Engineering (Minimal)
+Necessity: Must-have
+Why: Preps data for modeling, aligns with your 2022 “Data Cleaning” and “Feature Engineering.”
+Time: ~2-3 hours (leverage your prior work).
+Content:
+Cleaning: Handle missing values (e.g., interpolate sales), ensure dates are chronological (your 2022 fillna, to_datetime tricks).
+Feature Engineering: Minimal—add cyclic features (e.g., month_sin, month_cos) like 2022 for Prophet regressors. SARIMA uses raw sales, so no scaling needed.
+Plus: Exogenous variables (e.g., holidays from public data). Skip—time crunch, not required.
+5. Modeling
+Subsections:
+Baseline Model (Average)
+SARIMA Model
+Prophet Model
+Necessity: Must-have
+Why: Challenge requires 2+ models; SARIMA (traditional) and Prophet (ML-ish) balance rigor and ease. Baseline mirrors your 2022 approach.
+Time: ~12-15 hours (core effort).
+Content:
+Baseline Model: Average of past sales (your 2022 “Average Model”), simple benchmark.
+SARIMA: Use statsmodels.tsa.statespace.sarimax.SARIMAX. Initial order from decomposition (e.g., d=1 if trend, D=1, s=12 if seasonal), grid search (p, q, P, Q) over small range (0-2). Fit on train, predict 12 months.
+Prophet: Install prophet, fit with df['ds'] (date), df['y'] (sales), add cyclic features as regressors. Forecast 12 months.
+Plus: LSTM or hierarchical models. Skip—too complex for 72 hours.
+6. Model Validation and Tuning
+Subsections:
+Train-Test Split
+Time Series Cross-Validation
+Hyperparameter Tuning
+Necessity: Must-have
+Why: Challenge demands time series-specific validation and tuning justification.
+Time: ~6-8 hours.
+Content:
+Train-Test Split: Temporal split (e.g., train: 2020-2023, test: 2024), like your 2022 cutoff.
+Time Series Cross-Validation: Adapt your 2022 sliding window (e.g., 12-month test windows), 3-5 folds. Justify: “Preserves temporal order, mimics forecasting.”
+Hyperparameter Tuning: SARIMA—grid search on orders (p, d, q, P, D, Q), use AIC/BIC. Prophet—tweak seasonality scale (e.g., 0.01-10). Justify: “SARIMA needs stats fit, Prophet is heuristic.”
+Plus: Bayesian tuning. Skip—overkill.
+7. Model Evaluation
+Subsections:
+Error Metrics
+Residual Analysis
+Metric Justification
+Necessity: Must-have
+Why: Core to challenge—metrics and residuals are non-negotiable.
+Time: ~4-6 hours.
+Content:
+Error Metrics: Calculate MAE, MSE, RMSE, MAPE, WMAPE for baseline, SARIMA, Prophet on test set. Reuse your 2022 model_metrics function, add WMAPE (sum(|error| * sales) / sum(sales)).
+Residual Analysis: Plot residuals (y_test - y_pred), check for patterns, run Ljung-Box test (p-value > 0.05 = no autocorrelation). Basic but sufficient.
+Metric Justification: Pick WMAPE as primary—“Weights errors by demand, critical for inventory.” Explain others (e.g., RMSE for outliers).
+Plus: Full statistical assumption tests (normality). Skip—basic is enough.
+8. Results and Discussion
+Subsections:
+Model Comparison
+Business Insights
+Necessity: Must-have
+Why: Ties results to business value, like your 2022 “Business Performance Gain.”
+Time: ~2-3 hours.
+Content:
+Model Comparison: Table of metrics (like 2022 modelling_result), highlight best model (likely Prophet for ease, SARIMA for rigor).
+Business Insights: Forecasted demand plot, inventory implications (e.g., “Reduce stockouts by X%”).
+Plus: Scenarios (best/worst). Skip—nice but not required.
+9. Conclusion
+Subsections: None
+Necessity: Must-have
+Why: Wraps up, meets challenge’s conclusion requirement.
+Time: ~1 hour.
+Content: Summarize efficacy (e.g., “Prophet cuts RMSE by 30% vs. baseline”), note limitations (e.g., “No exogenous data”), suggest next steps (e.g., “Add holidays”).
+Plus: Future model ideas. Skip—focus on now.
+Time Allocation (Total: ~35-45 Hours)
+Day 1 (~12-15 hours): Intro, Data Loading, EDA (bulk of time here—decomposition is key).
+Day 2 (~15-20 hours): Data Prep, Modeling (SARIMA + Prophet), Validation/Tuning.
+Day 3 (~8-10 hours): Evaluation, Results, Conclusion, final polish.
+Leaves ~12-24 hours for sleep, breaks, and review within 72 hours.
+What’s Absolutely Necessary?
+These sections hit the challenge’s core:
+EDA: Overview, visualization, decomposition, stationarity—enough to justify modeling choices.
+Modeling: Baseline + SARIMA + Prophet—meets “2+ models” requirement.
+Validation: Temporal split + basic cross-validation—shows time series awareness.
+Evaluation: All 5 metrics (MAE, MSE, RMSE, MAPE, WMAPE), basic residuals, WMAPE justification—covers metrics and analysis.
+Structure: Clear, commented code—your 2022 strength.
+What’s a Plus?
+Deep EDA (ACF/PACF, anomalies).
+Extra models (LSTM, hierarchical).
+Full residual diagnostics (normality tests).
+Exogenous variables, MLflow.
+These impress but aren’t feasible in 72 hours given your rustiness and learning curve.
+Doable and Convincing?
+This structure is:
+Doable: ~35-45 hours leverages your 2022 skills (EDA, metrics, coding), adds SARIMA/Prophet (learnable in a day each), and keeps residuals basic. You’ve done harder (XGBoost tuning, API deployment)!
+Convincing: Shows EDA depth (decomposition), model variety (traditional + ML), proper validation, and business focus (WMAPE). It’s “pleno” level—rigorous yet pragmatic.

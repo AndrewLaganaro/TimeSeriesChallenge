@@ -1,0 +1,343 @@
+# %% [markdown]
+# # Previsão de Demanda de Rede Farmacêutica
+
+# %% [markdown]
+# ## Índice da Análise
+
+# %% [markdown]
+# 1. Business Problem
+#     * Starting Context
+#         * Business Understanding
+# 2. Starting Phase
+#     * Requirements
+#     * Libraries
+# 3. Analysis Phase
+#     * Data Collection
+#     * Data Cleaning
+#         * Feature Extraction
+#     * Data Analysis
+#         * Descriptive Data Analysis
+#         * Hypotheses Mindmap
+#         * Exploratory Data Analysis
+# 4. Model Phase
+#     * Feature Engineering
+#         * Data Preparation
+#         * Feature Selection
+#     * Model Building
+#         * Train-Test Splitting
+#         * Model Selection
+#             * Baseline Training
+#             * Cross Validation Training
+#             * Models Performance
+#     * Model Evaluation
+#         * Model Hyperparameter Fine Tuning
+#         * Metrics Interpretation
+#             * Business Metrics
+#             * Model Metrics
+# 5. Deployment Phase
+#     * Visualization and Dashboard
+#         * Performance Assessment
+#         * Model Performance
+#             * Baseline vs Model Performance
+#             * Model Performance in Business
+#         * Business Performance Gain
+#     * API development
+#         * Prediction Class
+#         * API Handler
+#         * API Tester
+#     * Web App
+#         * Frontend
+
+# %% [markdown]
+# # Business Problem
+
+# %% [markdown]
+# ## Contexto Inicial
+
+# %% [markdown]
+# "Uma empresa de distribuidora de medicamentos deseja melhorar suas previsões de demanda de produtos para otimizar seus estoques e reduzir custos operacionais. Atualmente, as previsões são feitas de forma manual e não têm sido eficazes, resultando tanto em excesso de estoque quanto em falta de produtos. Você foi convidado para desenvolver um modelo de previsão de demanda utilizando séries temporais."
+
+# %% [markdown]
+# ##### Especificações do Projeto
+
+# %% [markdown]
+# - Meta
+#     - Desenvolver um modelo de previsão de demanda para os próximos 12 meses, com base nos dados históricos de vendas de um produto específico.
+# 
+# - Ferramentas
+#     - Deve-se utilizar técnicas de séries temporais para criar esse modelo, focando na escolha apropriada de métricas de erro e na análise crítica do desempenho do modelo em relação ao conjunto de dados de validação. 
+# 
+# - Etapas Esperadas
+#     - EDA - Exploração Inicial dos Dados: Realize uma extensa análise exploratória dos dados, identificando padrões
+#         - Além disso, devem-se considerar fatores como tendências, sazonalidade e possíveis anomalias.
+# 
+#     - Modelagem: Utilizar pelo menos 2 métodos de modelagem para prever a demanda futura. Recomendamos considerar:
+# 
+#         - Modelos tradicionais de séries temporais (como ARIMA, SARIMA, ou ETS, etc).
+# 
+#         - Modelos baseados em aprendizado de máquina (como LSTM, Prophet ou outros).
+# 
+#         - Modelos de séries temporais hierarquicas (top-down, botton-up, etc)
+# 
+#         - Validação Cruzada: Justificar porque foi escolhido tal método em vez de outro (levando em consideração as particularidades de séries temporais (como Time Series Split) )
+#             - Caso usar validação cruzada no fine tunning, justicar também.
+# 
+#     - Métricas de Avaliação do Modelo
+#     
+#         - Avaliar o desempenho do seu modelo utilizando as seguintes métricas de erro:
+# 
+#             - MAE (Mean Absolute Error)
+# 
+#             - MSE (Mean Squared Error)
+# 
+#             - RMSE (Root Mean Squared Error)
+# 
+#             - MAPE (Mean Absolute Percentage Error)
+# 
+#             - WMAPE (Weighted Mean Absolute Percentage Error)
+# 
+#             - Explicar qual métrica se considera mais adequada para este tipo de problema e por quê
+# 
+#             - Focar nas métricas de erro mas não exclua as outras
+# 
+#         - Ajuste de Hiperparâmetros: Descreva o processo de ajuste de hiperparâmetros, se aplicável e porque usou tal método em vez de outro.
+# 
+#         - Análise de Resíduos
+#             - Avaliar os resíduos do modelo 
+#             - Avaliar o cumprimento ou não dos pressupostos estatístico e seus respectivos p-values
+# 
+# 
+# Entrega final:
+# 
+# - Análise Exploratória dos Dados (EDA).
+#     - Qualidade da Análise Exploratória: Identificação adequada de padrões nas séries temporais (tendência, sazonalidade, etc.).
+# 
+# - Explicação detalhada dos modelos escolhidos e das etapas de validação.
+#     - Adequação do Modelo: Capacidade de escolher modelos apropriados para a tarefa.
+# 
+# - Discussão das métricas, principalmente de erros, resíduos e interpretação dos resultados.
+#     - Explicação das Métricas (principalmente de Erro): Clareza e precisão ao explicar as métricas utilizadas, e justificativa para a métrica escolhida como principal.
+# 
+# - Conclusões sobre a eficácia dos modelos.
+#     - Interpretação do Resultado: Capacidade de interpretar os resultados e oferecer insights úteis para o negócio.
+# 
+# - Código bem estruturado e extensamente comentado, pronto para ser executado.
+#     - Qualidade do Código: Organização, clareza, uso adequado de comentários e eficiência.
+# 
+# - Caso queira, sinta-se à vontade para propor novos insights ou métodos além do solicitado.
+#     - Profundidade Técnica: Demonstração de conhecimento avançado em séries temporais, modelos, métricas, e análise de resíduos.
+# 
+# Diferenciais Bônus:
+# 
+# - Se um dos modelos escolhidos for de série temporal hierárquica.
+# 
+# - Demonstrar profundidade no uso do WMAPE
+# 
+# - Consideração de variáveis exógenas coletadas de datasets públicos.
+# 
+# - Uso do mlflow
+
+# %% [markdown]
+# 
+
+# %% [markdown]
+# ##### Entendimento do Negócio
+
+# %% [markdown]
+# É possível entender o problema de negócio fazendo apenas 4 perguntas, estas são:
+
+# %% [markdown]
+# * Qual a Motivação?
+#     - Qual o contexto?
+# * Qual a causa raiz do problema?
+#     - Porque fazer uma análise de vendas e não outra coisa?
+# * Quem é o dono do problema?
+#     - Quem precisa dessa solução? Quem vai nos cobrar?
+# * Qual o formato da solução de deploy?
+#     - Granularidade:
+#         - Qual o alcance esperado para se fazer essa análise?
+#         - Análise feita semanal, diária, mensal, por loja, por cidade etc
+#     - Tipo de Análise:
+#         - Será regressão, classificação, clustering, etc
+#     - Potenciais Métodos:
+#         - Podemos supor que vai ser usado qual algoritmo? random forest, regressão linear, KNN, etc
+#     - Formato de deploy:
+#         - Aplicação web, aplicação mobile, bot do Telegram, Docker, Heroku, AWS, etc
+
+# %% [markdown]
+# No nosso caso, as respostas para as perguntas acima são:
+
+# %% [markdown]
+# * Qual a motivação?
+#     - O Representante da empresa distribuidora de medicamentos requisitou uma análise de vendas para os próximos 12 meses.
+# * Qual a causa raiz do problema?
+#     - Melhor previsibilidade de demanda, gerando assim um melhor controle de estoque e redução de custos operacionais de logística.
+#     - Dificuldade em determinar o valor da demanda mensal
+# * Quem é o dono do problema?
+#     - O Representante da empresa distribuidora
+# * Qual o formato da solução de deploy?
+#     - Granularidade:
+#         - Previsão de demanda mensal
+#     - Tipo de Análise:
+#         - Predição de séries temporais
+#     - Potenciais Métodos:
+#         - Modelos como ARIMA, SARIMA, LSTM, Prophet, XGBoost
+#     - Formato de deploy:
+#         - Predição mensal (para o próximo mês) acessada via celular
+#             - Idealmente, o modelo pode ser refinado mês a mês, com a inclusão dos dados do mês corrente
+#             - A primeira entrega, no entanto, é a predição completa dos próximos 12 meses
+#         - Utilizar API do Telegram
+
+# %% [markdown]
+# # Starting Phase
+
+# %% [markdown]
+# Na fase inicial do projeto importamos as bibliotecas necessárias, fazemos as configurações iniciais do notebook e de algumas bibliotecas.
+# 
+# Com ela bem feita vamos ter tudo pronto para seguir a análise bem configurada e reprodutível para outras pessoas.
+
+# %% [markdown]
+# ##### Requirements.txt
+
+# %% [markdown]
+# ```
+# # Core data analysis and visualization
+# pandas>=2.0.0
+# numpy>=1.24.0
+# matplotlib>=3.7.0
+# seaborn>=0.12.0
+# scipy>=1.10.0
+# tabulate>=0.9.0
+# # NLP and text processing
+# inflection>=0.5.1
+# # Utility libraries
+# requests>=2.28.0
+# # ipython>=8.10.0 # Perhaps you already have it
+# # Machine Learning
+# scikit-learn>=1.2.0
+# xgboost>=1.7.0
+# lightgbm>=3.3.0
+# catboost>=1.1.0
+# boruta>=0.3.0
+# # Time Series Analysis
+# statsmodels>=0.13.0
+# prophet>=1.1.0
+# # Other utilities
+# python-dateutil>=2.8.0
+# 
+# ```
+
+# %% [markdown]
+# ## Libraries
+
+# %%
+try:
+    # Fundamental Analytics libraries
+    import pandas as pd
+    import seaborn as sns
+    import numpy as np
+    from matplotlib import pyplot as plt
+    from scipy import stats as sts
+    # Toolbox libraries
+    import time
+    import math
+    import pickle
+    import random
+    import requests
+    import inflection #NLP
+    import warnings
+    from operator import itemgetter as pick
+    from datetime import datetime, timedelta
+    from tabulate import tabulate
+    from IPython.display import Image
+    from IPython.core.display import HTML
+    import json
+    # Feature Engineering
+    from sklearn.preprocessing import RobustScaler, MinMaxScaler, LabelEncoder
+    # Model libraries
+    # Regressors, feature selection
+    from boruta import BorutaPy
+    import xgboost as xgblib
+    from xgboost import XGBRegressor
+    from lightgbm import LGBMRegressor
+    from catboost import CatBoostRegressor
+    from sklearn.ensemble import RandomForestRegressor
+    # Statsmodels - Time Series
+    from statsmodels.tsa.seasonal import seasonal_decompose # Decomposition
+    from statsmodels.tsa.stattools import adfuller          # Stationarity
+    from statsmodels.stats.diagnostic import acorr_ljungbox # Autocorrelation
+    from statsmodels.tsa.statespace.sarimax import SARIMAX  # ARIMA and Seasonal ARIMA with Exogenous Variables
+    # Time Series
+    from prophet import Prophet                             # Prophet
+    # Metrics
+    from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error
+    # Initial configurations
+    warnings.filterwarnings('ignore')
+    warnings.simplefilter(action = 'ignore', category = FutureWarning)
+    xgblib.set_config(verbosity = 0)
+    # Info about imports
+    print("Import successful")
+    
+except Exception as e:
+    print("Error while importing libraries: ", "/n", e)
+
+# %%
+Start = datetime.now() 
+
+# %% [markdown]
+# ## Notebook Settings
+
+# %%
+def notebook_settings():
+    %matplotlib inline
+    
+    plt.style.use('bmh')
+    plt.rcParams['figure.figsize'] = [30, 15]
+    plt.rcParams['font.size'] = 24
+    
+    display(HTML('<style>.container { width:100% !important; }</style>'))
+    #pd.options.display.max_columns = None
+    #pd.options.display.max_rows = None
+    #pd.set_option('display.expand_frame_repr', False)
+    sns.set_theme()
+    
+notebook_settings()
+
+# %% [markdown]
+# ##### Procedimento padrão dos projetos de Data Science
+
+# %%
+Image(filename='.\\Assets\\DS_sequence.png')
+
+# %% [markdown]
+# ## Data Collection
+
+# %%
+# Carregamento do dataset
+try:
+    df_raw = pd.read_csv('.\df_case_1_-_500_linhas.csv')
+    print("Dataset carregado com sucesso")
+except Exception as e:
+    print(f"Erro ao carregar: {e}")
+
+
+# %%
+df_raw.head()
+
+# %% [markdown]
+# Categoria - Categoria do produto
+# 
+# Produto - Nome do produto
+# 
+# Fornecedor - Nome do fornecedor
+# 
+# Comprador - Nome do comprador
+# 
+# Centros de distribuição - Nome do centro de distribuição
+# 
+# Descrição - Descrição do produto
+# 
+# Qtd de caixas - Quantidade de caixas compradas
+
+# %%
+# Seleção de um produto para previsão (exemplo: Produto A, Centro A)
